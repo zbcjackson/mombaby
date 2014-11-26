@@ -22,6 +22,7 @@ class BabytreeSpider(CrawlSpider):
         question = QuestionItem()
         question['question'] = response.css('h1::text').extract()[0]
         question['question_time'] = response.css('div.qa-contributor abbr::text').extract()[0]
+        question['answers'] = '\n'.join(response.css('div.answer-text::text,ul.answer-comments li::text').extract())
         question['last_updated'] = datetime.now()
         question['url'] = response.url
         return question

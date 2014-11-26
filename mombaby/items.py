@@ -16,5 +16,6 @@ class QuestionItem(scrapy.Item):
     # name = scrapy.Field()
     question = scrapy.Field()
     question_time = scrapy.Field()
+    answers = scrapy.Field()
     last_updated = scrapy.Field()
     url = scrapy.Field()
