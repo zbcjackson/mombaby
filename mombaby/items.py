@@ -7,9 +7,13 @@
 
 import scrapy
 
+from scrapy.contrib.loader.processor import Join
+
 def encoding(value):
   return value.encode('utf-8').decode("unicode_escape")
 
+def join_multiline(value):
+  return '\n'.join(value)
 
 class QuestionItem(scrapy.Item):
     # define the fields for your item here like:

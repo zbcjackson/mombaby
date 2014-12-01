@@ -6,6 +6,10 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from scrapy.contrib.exporter import JsonItemExporter
 
+from email.mime.text import MIMEText
+from email.header import Header
+from subprocess import Popen, PIPE
+
 class JsonExportPipeline(object):
     def __init__(self):
       self.file = open('babytree.json', 'w+b')
@@ -20,4 +24,17 @@ class JsonExportPipeline(object):
 
     def process_item(self, item, spider):
       self.exporter.export_item(item)
+      return item
+
+class EmailPipeline(object):
+    def process_item(self, item, spider):
+      print "get email info..."
+      msg = MIMEText(item['question'] + '<br/>' + item['url'] + '<br/>' + item['answers'], 'html', 'utf-8')
+      msg["From"] = 'zbcjackson@gmail.com'
+      msg["To"] = 'zbcjackson@gmail.com;ace0918@126.com;qinwen.shi@gmail.com;tengzhenyu@gmail.com'
+      msg["Subject"] = Header(u"[母婴问答]" + item['question'], 'utf-8')
+      p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+      res = p.communicate(msg.as_string())
+      print 'mail sended ...'
+
       return item
