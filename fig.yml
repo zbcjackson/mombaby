@@ -1,0 +1,26 @@
+crawler:
+  build: .
+  command: python main.py
+  volumes:
+    - .:/code
+  links:
+    - db
+db:
+  image: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: ttq
+    MYSQL_DATABASE: mombaby
+    MYSQL_USER: ttq
+    MYSQL_PASSWORD: ttq
+  ports:
+    - "3306:3306"
+web:
+  build: ../railsfig
+  command: bundle exec rails s
+  volumes:
+    - ../railsfig:/myapp
+  ports:
+    - "3000:3000"
+  links:
+    - db
+

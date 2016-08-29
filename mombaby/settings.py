@@ -15,7 +15,8 @@ NEWSPIDER_MODULE = 'mombaby.spiders'
 
 ITEM_PIPELINES = {
     'mombaby.pipelines.JsonExportPipeline': 300,
-    'mombaby.pipelines.EmailPipeline': 800
+    'mombaby.pipelines.MySQLPipeline': 600
+    # 'mombaby.pipelines.EmailPipeline': 800
 }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

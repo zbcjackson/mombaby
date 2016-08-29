@@ -9,6 +9,7 @@ from scrapy.contrib.exporter import JsonItemExporter
 from email.mime.text import MIMEText
 from email.header import Header
 from subprocess import Popen, PIPE
+import MySQLdb
 
 class JsonExportPipeline(object):
     def __init__(self):
@@ -38,3 +39,17 @@ class EmailPipeline(object):
       print 'mail sended ...'
 
       return item
+
+class MySQLPipeline(object):
+  def __init__(self):
+    self.conn = MySQLdb.connect(user='ttq', passwd='ttq', db='mombaby', host='192.168.59.103', charset="utf8", use_unicode=True)
+    self.cursor = self.conn.cursor()
+
+  def process_item(self, item, spider):
+    try:
+      self.cursor.execute("""INSERT INTO questions(question, answers) VALUES (%s, %s)""", (item['question'], item['answers']))
+      self.conn.commit()
+    except MySQLdb.Error, e:
+        print "Error %d: %s" % (e.args[0], e.args[1])
+        return item
+
